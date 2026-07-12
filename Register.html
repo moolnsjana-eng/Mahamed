@@ -33,25 +33,56 @@
 
         <p class="link-text">Hore ma u diiwaangashan tahay? <a href="login.html">Gal halkan (Login)</a></p>
     </div>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          emailjs.init("HALKAN_KU_QOR_PUBLIC_KEY_GAAGA"); // Gali Public Key-gaaga EmailJS
+       })();
+    </script>
+
     <script>
         const form = document.querySelector('form');
-        
+        const btn = document.querySelector('.btn');
+
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
+            e.preventDefault(); // Jooji form-ka inuu toos u baxo
 
-            // Soo qabo koodhka uu qofku soo galiyay iyo kii aan horay u xafidnay
-            const enteredCode = document.querySelector('input[type="number"]').value;
-            const savedCode = sessionStorage.getItem('savedCode');
+            // Soo qabo xogta la galiyay
+            const name = document.querySelector('input[type="text"]').value;
+            const email = document.querySelector('input[type="email"]').value;
 
-            if (enteredCode === savedCode) {
-                // Haddii uu sax yahay, u gudbi bogga Home.html
-                window.location.href = 'Home.html';
-            } else {
-                // Haddii uu khalad yahay, u sheeg qofka
-                alert('Koodhka aad galisay waa khalad! Fadlan hubi email-kaaga.');
-            }
+            // Samee koodh 6-god ah oo random ah
+            const verificationCode = Math.floor(100000 + Math.random() * 900000);
+
+            // Ku xafid koodhka xusuusta gaaban ee Browser-ka (Session Storage)
+            sessionStorage.setItem('savedCode', verificationCode);
+
+            // Bedel qoraalka badhanka iyo midabkiisa si qofku u dareemo in fariintu socoto
+            btn.innerHTML = 'Waa la dirayaa... <i class="fa-solid fa-spinner fa-spin"></i>';
+            btn.style.backgroundColor = '#f59e0b'; 
+
+            // Xogta loo dirayo EmailJS (Hubi in Template-kaagu aqoonsan yahay magacyadan)
+            const templateParams = {
+                to_name: name,
+                to_email: email,
+                message: verificationCode
+            };
+
+            // Dir Email-ka
+            emailjs.send('HALKAN_KU_QOR_SERVICE_ID', 'HALKAN_KU_QOR_TEMPLATE_ID', templateParams)
+                .then(function(response) {
+                    console.log('WAA LAGU GUULAYSTAY!', response.status, response.text);
+                    // Markuu email-ku baxo, u dir bogga xaqiijinta
+                    window.location.href = 'reviewcode.html';
+                }, function(error) {
+                    console.log('WAA FASHILMAY...', error);
+                    alert('Cilad ayaa dhacday, fadlan dib u isku day.');
+                    btn.innerHTML = 'Send Code Email <i class="fa-solid fa-paper-plane"></i>';
+                    btn.style.backgroundColor = '#10b981';
+                });
         });
     </script>
+
 </body>
 </html>
 
