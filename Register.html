@@ -38,11 +38,12 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
        (function(){
-          emailjs.init("HALKAN_KU_QOR_PUBLIC_KEY_GAAGA"); // Gali Public Key-gaaga EmailJS
+          emailjs.init("CAZI5zTFZHRCJJ29P"); // Gali Public Key-gaaga EmailJS
        })();
     </script>
 
     <script>
+        
         const form = document.querySelector('form');
         const btn = document.querySelector('.btn');
 
@@ -71,7 +72,7 @@
             };
 
             // Dir Email-ka
-            emailjs.send('HALKAN_KU_QOR_SERVICE_ID', 'HALKAN_KU_QOR_TEMPLATE_ID', templateParams)
+            emailjs.send('service_dbjdryu', 'template_uac1ldy', templateParams)
                 .then(function(response) {
                     console.log('WAA LAGU GUULAYSTAY!', response.status, response.text);
                     // Markuu email-ku baxo, u dir bogga xaqiijinta
