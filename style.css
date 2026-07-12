@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f8fafc; /* Caddaan yar oo jilicsan */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #ffffff; /* Caddaan saafi ah */
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.container h2 {
+    color: #10b981; /* Cagaar */
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #10b981; /* Cagaar */
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.input-group input:focus {
+    border-color: #10b981; /* Cagaar marka la taabto */
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #10b981; /* Cagaar */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #f59e0b; /* Dahabi - Midabka aan doortay */
+    transform: translateY(-2px);
+}
+
+.link-text {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.link-text a {
+    color: #10b981;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link-text a:hover {
+    color: #f59e0b; /* Dahabi */
+}
+
