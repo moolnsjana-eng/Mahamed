@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tijaabada EmailJS</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          // Kani waa Public Key-gaagii saxda ahaa
+          emailjs.init("CAZI5zTFZHRCJJ29P");
+       })();
+    </script>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial, sans-serif; background-color: #f3f4f6; }
+        button { padding: 15px 30px; font-size: 18px; background-color: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; }
+        button:hover { background-color: #059669; }
+    </style>
+</head>
+<body>
+
+    <button id="tijaabiBtn">Tijaabi EmailJS Hadda</button>
+
+    <script>
+        document.getElementById('tijaabiBtn').addEventListener('click', function() {
+            const btn = this;
+            btn.innerText = 'Waa la dirayaa...';
+            btn.style.backgroundColor = '#f59e0b';
+
+            // Xogta tijaabada ah
+            const templateParams = {
+                to_name: 'Maxamed Tijaabo',
+                to_email: 'EMAIL_KAAGA_HALKAN_GALI', // <--- HALKAN GALI EMAIL-KAAGA
+                message: '123456' // Koodh tijaabo ah
+            };
+
+            // Dir fariinta iyadoo la isticmaalayo Service ID iyo Template ID-gaaga
+            emailjs.send('service_dbjdryu', 'template_uac1ldy', templateParams)
+                .then(function(response) {
+                    console.log('WAA GUUL!', response.status, response.text);
+                    alert('WAA GUUL! Fariintii waa baxday, fadlan hubi email-kaaga.');
+                    btn.innerText = 'Tijaabi EmailJS Hadda';
+                    btn.style.backgroundColor = '#10b981';
+                }, function(error) {
+                    console.log('FASHIL...', error);
+                    // Qaybtan waxay isha shaashadda soo dhigaysaa CILADA Rasmiga ah ee jirta
+                    alert('CILAD AYAA DHACDAY: ' + JSON.stringify(error));
+                    btn.innerText = 'Tijaabi EmailJS Hadda';
+                    btn.style.backgroundColor = '#ef4444';
+                });
+        });
+    </script>
+
+</body>
+</html>
+
