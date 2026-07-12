@@ -33,7 +33,25 @@
 
         <p class="link-text">Hore ma u diiwaangashan tahay? <a href="login.html">Gal halkan (Login)</a></p>
     </div>
+    <script>
+        const form = document.querySelector('form');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
 
+            // Soo qabo koodhka uu qofku soo galiyay iyo kii aan horay u xafidnay
+            const enteredCode = document.querySelector('input[type="number"]').value;
+            const savedCode = sessionStorage.getItem('savedCode');
+
+            if (enteredCode === savedCode) {
+                // Haddii uu sax yahay, u gudbi bogga Home.html
+                window.location.href = 'Home.html';
+            } else {
+                // Haddii uu khalad yahay, u sheeg qofka
+                alert('Koodhka aad galisay waa khalad! Fadlan hubi email-kaaga.');
+            }
+        });
+    </script>
 </body>
 </html>
 
