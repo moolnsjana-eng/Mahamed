@@ -13,7 +13,7 @@
         <h2>Gali Koodhka</h2>
         <p class="link-text" style="margin-bottom: 20px;">Koodh lix god ah ayaa laguugu diray Email-kaaga. Fadlan hoos ku qor.</p>
         
-        <form action="Home.html" method="GET">
+        
             <div class="input-group">
                 <i class="fa-solid fa-key"></i>
                 <input type="number" placeholder="Tusaale: 123456" required>
@@ -22,6 +22,25 @@
             <button type="submit" class="btn">Xaqiiji Koodhka <i class="fa-solid fa-circle-check"></i></button>
         </form>
     </div>
+    <script>
+        const form = document.querySelector('form');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Soo qabo koodhka uu qofku soo galiyay iyo kii aan horay u xafidnay
+            const enteredCode = document.querySelector('input[type="number"]').value;
+            const savedCode = sessionStorage.getItem('savedCode');
+
+            if (enteredCode === savedCode) {
+                // Haddii uu sax yahay, u gudbi bogga Home.html
+                window.location.href = 'Home.html';
+            } else {
+                // Haddii uu khalad yahay, u sheeg qofka
+                alert('Koodhka aad galisay waa khalad! Fadlan hubi email-kaaga.');
+            }
+        });
+    </script>
 
 </body>
 </html>
