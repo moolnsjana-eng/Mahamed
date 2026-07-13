@@ -3,36 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soo Gal (Login)</title>
+    <title>MUD`TIME - Soo Gal (Login)</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="container">
-        <h2>Soo Gal</h2>
-        <form id="loginForm">
+    <div class="petals-container" id="petals"></div>
+
+    <div class="auth-container">
+        <div class="auth-card">
             
-            <div class="input-group">
-                <i class="fa-solid fa-envelope"></i>
-                <input type="email" id="loginEmail" placeholder="Gali Email-kaaga" required>
+            <div class="auth-logo">
+                <h1>MUD`<span>TIME</span></h1>
+                <p>Ku soo dhawaaw maqaaxidaada</p>
             </div>
 
-            <div class="input-group">
-                <i class="fa-solid fa-lock"></i>
-                <input type="password" id="loginPassword" placeholder="Gali Password-ka" required>
-            </div>
+            <form id="loginForm">
+                
+                <div class="form-group">
+                    <label class="form-label">Email-kaaga</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="loginEmail" class="form-input" placeholder="Gali Email-kaaga" required>
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                    </div>
+                </div>
 
-            <div style="text-align: right; margin-bottom: 15px;">
-                <a href="forgot-password.html" style="font-size: 13px; color: #27ae60; text-decoration: none;">Ma ilowday Password-ka?</a>
-            </div>
+                <div class="form-group">
+                    <label class="form-label">Password-ka</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="loginPassword" class="form-input" placeholder="Gali Password-ka" required>
+                        <i class="fa-solid fa-lock input-icon"></i>
+                    </div>
+                </div>
 
-            <button type="submit" class="btn">Login <i class="fa-solid fa-right-to-bracket"></i></button>
-            
-        </form>
+                <div class="form-options">
+                    <div></div> <a href="forgot-password.html" class="form-link">Ma ilowday Password-ka?</a>
+                </div>
 
-        <p class="link-text">Wali ma is-diiwaangalisay? <a href="Register.html">Is-diiwaangali Halkan</a></p>
+                <button type="submit" class="btn-primary btn">Login <i class="fa-solid fa-right-to-bracket"></i></button>
+                
+            </form>
+
+            <p class="auth-footer">Wali ma is-diiwaangalisay? <a href="Register.html">Is-diiwaangali Halkan</a></p>
+        </div>
     </div>
+
+    <script>
+        function createPetals() {
+            const container = document.getElementById('petals');
+            const petalCount = 15; // Tirada caleemaha
+            
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.width = Math.random() * 12 + 8 + 'px';
+                petal.style.height = Math.random() * 12 + 8 + 'px';
+                petal.style.animationDelay = Math.random() * 8 + 's';
+                petal.style.animationDuration = Math.random() * 6 + 6 + 's';
+                
+                container.appendChild(petal);
+            }
+        }
+        createPetals();
+    </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
@@ -56,6 +92,12 @@
             const email = document.getElementById('loginEmail').value.trim();
             const pass = document.getElementById('loginPassword').value;
 
+            // Badhanka soo galka oo loo yeelayo animations inta xogta la hubinayo
+            const btn = document.querySelector('.btn');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = 'Falanqaynaya... <i class="fa-solid fa-spinner fa-spin"></i>';
+            btn.style.backgroundColor = 'var(--accent-gold)';
+
             try {
                 const docRef = doc(db, "users", email);
                 const docSnap = await getDoc(docRef);
@@ -68,12 +110,18 @@
                         window.location.href = 'Home.html'; 
                     } else {
                         alert('Password-kaagu waa qaldan yahay! ❌');
+                        btn.innerHTML = originalHTML;
+                        btn.style.backgroundColor = 'var(--primary-coffee)';
                     }
                 } else {
                     alert('Email-kan ma aha mid is-diiwaangeliyey! ❌');
+                    btn.innerHTML = originalHTML;
+                    btn.style.backgroundColor = 'var(--primary-coffee)';
                 }
             } catch (error) {
                 alert('Cilad ayaa dhacday: ' + error.message);
+                btn.innerHTML = originalHTML;
+                btn.style.backgroundColor = 'var(--primary-coffee)';
             }
         });
     </script>
