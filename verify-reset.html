@@ -3,25 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xaqiiji Code-ka</title>
-    <link rel="stylesheet" href="reset-style.css">
+    <title>MUD`TIME - Xaqiiji Code-ka</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h2>Xaqiiji Code-ka</h2>
-        <p>Waxaan code xaqiijin ah u dirnay email-kaaga. Fadlan hoos ku qor si aan kuu fasaxno.</p>
-        
-        <form id="verifyForm">
-            <div class="input-group">
-                <i class="fa-solid fa-key"></i>
-                <input type="text" id="enteredCode" placeholder="Gali Code-ka (Tus: 123456)" required autocomplete="off" maxlength="6">
+
+    <div class="petals-container" id="petals"></div>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            
+            <div class="auth-logo">
+                <h1>MUD`<span>TIME</span></h1>
+                <p>Xaqiiji Code-ka</p>
+                <p style="font-size: 0.85rem; color: #666; margin-top: 10px; text-transform: none; font-weight: normal;">
+                    Waxaan code xaqiijin ah u dirnay email-kaaga. Fadlan hoos ku qor si aan kuu fasaxno.
+                </p>
             </div>
-            <button type="submit" class="btn">Xaqiiji <i class="fa-solid fa-circle-check"></i></button>
-        </form>
-        
-        <p class="link-text"><a href="forgot-password.html">Dib ugu noqo</a></p>
+
+            <form id="verifyForm">
+                
+                <div class="form-group">
+                    <label class="form-label">Geli Code-ka Xaqiijinta</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="enteredCode" class="form-input" placeholder="Gali Code-ka (Tus: 123456)" required autocomplete="off" maxlength="6">
+                        <i class="fa-solid fa-key input-icon"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary btn">Xaqiiji <i class="fa-solid fa-circle-check"></i></button>
+            </form>
+
+            <p class="auth-footer"><a href="forgot-password.html"><i class="fa-solid fa-arrow-left" style="font-size: 0.8rem; margin-right: 5px;"></i> Dib ugu noqo</a></p>
+        </div>
     </div>
+
+    <script>
+        function createPetals() {
+            const container = document.getElementById('petals');
+            const petalCount = 15; 
+            
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.width = Math.random() * 12 + 8 + 'px';
+                petal.style.height = Math.random() * 12 + 8 + 'px';
+                petal.style.animationDelay = Math.random() * 8 + 's';
+                petal.style.animationDuration = Math.random() * 6 + 6 + 's';
+                
+                container.appendChild(petal);
+            }
+        }
+        createPetals();
+    </script>
 
     <script>
         // Marka hore hubi in qofku uu soo maray bogga 'forgot-password'
@@ -39,9 +76,14 @@
             
             // Soo qaado code-ka uu qofku qoray
             const userCode = document.getElementById('enteredCode').value.trim();
+            const btn = document.querySelector('.btn');
 
             // Is-barbardhig labada code
             if (userCode === savedCode) {
+                // UI feedback marka uu sax yahay code-ka
+                btn.innerHTML = 'Waa la xaqiijiyey... <i class="fa-solid fa-spinner fa-spin"></i>';
+                btn.style.backgroundColor = 'var(--accent-gold)';
+                
                 alert('Code-ku waa sax! ✅ Hadda waxaad bedeli kartaa password-kaaga.');
                 // Haddii uu sax yahay, u dir bogga ugu dambeeya ee password bedelka
                 window.location.href = 'new-password.html';
@@ -52,4 +94,3 @@
     </script>
 </body>
 </html>
-
