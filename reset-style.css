@@ -1,0 +1,129 @@
+/* Import Google Font for a modern look */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    /* Background cagaar aad u khafiif ah oo indhaha u roon */
+    background-color: #eafaf1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Midabka 3aad ee aan kuu xushay (Dark Slate Gray) - Qoraalka */
+    color: #1e293b; 
+}
+
+.container {
+    /* Cadaan (White) - Sanduuqa form-ka */
+    background-color: #ffffff; 
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(39, 174, 96, 0.15); /* Hoos cagaar ah */
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
+
+.container h2 {
+    font-size: 26px;
+    margin-bottom: 10px;
+    color: #1e293b;
+}
+
+.container p {
+    font-size: 14px;
+    margin-bottom: 25px;
+    color: #64748b;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    /* Cagaar (Green) - Astaamaha (Icons) */
+    color: #27ae60; 
+    font-size: 18px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 15px 14px 45px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.3s ease;
+    color: #1e293b;
+}
+
+.input-group input::placeholder {
+    color: #94a3b8;
+}
+
+.input-group input:focus {
+    /* Cagaar - Marka la taabto border-ka wuxuu isku badalayaa cagaar */
+    border-color: #27ae60; 
+    box-shadow: 0 0 8px rgba(39, 174, 96, 0.2);
+}
+
+.btn {
+    /* Cagaar (Green) - Badhanka */
+    background-color: #27ae60; 
+    color: #ffffff; /* Cadaan */
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.1s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn:hover {
+    background-color: #219653; /* Cagaar yara madow marka la dul geeyo mouse-ka */
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.link-text {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.link-text a {
+    /* Cagaar - Link-yada */
+    color: #27ae60; 
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.link-text a:hover {
+    color: #1e293b; /* Midabka 3aad markii la dul geeyo */
+    text-decoration: underline;
+}
+
