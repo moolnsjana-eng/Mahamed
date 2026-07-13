@@ -3,71 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xaqiiji Koodhka</title>
+    <title>MUD`TIME - Xaqiiji Koodhka</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="container">
-        <h2>Gali Koodhka</h2>
-        <p class="link-text" style="margin-bottom: 20px;">Koodh lix god ah ayaa laguugu diray Email-kaaga. Fadlan hoos ku qor.</p>
-        
-        <form id="verifyForm">
-            <div class="input-group">
-                <i class="fa-solid fa-key"></i>
-                <input type="number" id="enteredCode" placeholder="Tusaale: 123456" required>
+    <div class="petals-container" id="petals"></div>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            
+            <div class="auth-logo">
+                <h1>MUD`<span>TIME</span></h1>
+                <p>Xaqiiji Koodhka</p>
+                <p style="font-size: 0.85rem; color: #666; margin-top: 10px; text-transform: none; font-weight: normal;">
+                    Koodh lix god ah ayaa laguugu diray Email-kaaga. Fadlan hoos ku qor.
+                </p>
             </div>
 
-            <button type="submit" class="btn">Xaqiiji Koodhka <i class="fa-solid fa-circle-check"></i></button>
-        </form>
+            <form id="verifyForm">
+                
+                <div class="form-group">
+                    <label class="form-label">Geli Koodhka Xaqiijinta</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="enteredCode" class="form-input" placeholder="Tusaale: 123456" required>
+                        <i class="fa-solid fa-key input-icon"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary btn">Xaqiiji Koodhka <i class="fa-solid fa-circle-check"></i></button>
+            </form>
+
+        </div>
     </div>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAaRTHlkfc0fDwfVNCDvqtMqg39NzIsqhY",
-    authDomain: "login-6f03a.firebaseapp.com",
-    projectId: "login-6f03a",
-    storageBucket: "login-6f03a.firebasestorage.app",
-    messagingSenderId: "392453627354",
-    appId: "1:392453627354:web:dd84fb1a0e4d18790cb4e3"
-  };
+    <script>
+        function createPetals() {
+            const container = document.getElementById('petals');
+            const petalCount = 15; 
+            
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.width = Math.random() * 12 + 8 + 'px';
+                petal.style.height = Math.random() * 12 + 8 + 'px';
+                petal.style.animationDelay = Math.random() * 8 + 's';
+                petal.style.animationDuration = Math.random() * 6 + 6 + 's';
+                
+                container.appendChild(petal);
+            }
+        }
+        createPetals();
+    </script>
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+      import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-  // Marka xaqiijinta la taabto
-  document.getElementById('verifyForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const userCode = document.getElementById('enteredCode').value;
-      const savedCode = sessionStorage.getItem('savedCode');
+      const firebaseConfig = {
+        apiKey: "AIzaSyAaRTHlkfc0fDwfVNCDvqtMqg39NzIsqhY",
+        authDomain: "login-6f03a.firebaseapp.com",
+        projectId: "login-6f03a",
+        storageBucket: "login-6f03a.firebasestorage.app",
+        messagingSenderId: "392453627354",
+        appId: "1:392453627354:web:dd84fb1a0e4d18790cb4e3"
+      };
 
-      if (userCode === savedCode) {
-          // Xogta ka soo qaad kaydka
-          const name = sessionStorage.getItem('userName');
-          const email = sessionStorage.getItem('userEmail');
-          const pass = sessionStorage.getItem('userPassword');
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
 
-          try {
-              // U dir Firebase
-              await setDoc(doc(db, "users", email), {
-                  name: name,
-                  email: email,
-                  password: pass,
-                  date: new Date().toISOString()
-              });
-              alert('Waa la diiwaangeliyay! ✅');
-              window.location.href = 'home.html';
-          } catch (error) {
-              alert('Cilad ayaa dhacday: ' + error.message);
+      // Marka xaqiijinta la taabto
+      document.getElementById('verifyForm').addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const userCode = document.getElementById('enteredCode').value;
+          const savedCode = sessionStorage.getItem('savedCode');
+          const btn = document.querySelector('.btn');
+
+          if (userCode === savedCode) {
+              // Xogta ka soo qaad kaydka
+              const name = sessionStorage.getItem('userName');
+              const email = sessionStorage.getItem('userEmail');
+              const pass = sessionStorage.getItem('userPassword');
+
+              // UI feedback marka xogta la dirayo
+              btn.innerHTML = 'Diiwaangelinaya... <i class="fa-solid fa-spinner fa-spin"></i>';
+              btn.style.backgroundColor = 'var(--accent-gold)';
+              btn.disabled = true;
+
+              try {
+                  // U dir Firebase
+                  await setDoc(doc(db, "users", email), {
+                      name: name,
+                      email: email,
+                      password: pass,
+                      date: new Date().toISOString()
+                  });
+                  alert('Waa la diiwaangeliyay! ✅');
+                  window.location.href = 'home.html';
+              } catch (error) {
+                  alert('Cilad ayaa dhacday: ' + error.message);
+                  btn.innerHTML = 'Xaqiiji Koodhka <i class="fa-solid fa-circle-check"></i>';
+                  btn.style.backgroundColor = 'var(--primary-coffee)';
+                  btn.disabled = false;
+              }
+          } else {
+              alert('Koodhkaagu waa qaldan yahay. ❌');
           }
-      } else {
-          alert('Koodhkaagu waa qaldan yahay.');
-      }
-  });
-</script>
-
+      });
+    </script>
 </body>
 </html>
