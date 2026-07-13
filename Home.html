@@ -163,12 +163,15 @@
         }
         createPetals();
 
-        function logout() {
-            sessionStorage.clear();
-            localStorage.removeItem('userEmail'); // Tirtir haddii uu jiro
-            localStorage.removeItem('loggedUser');
-            window.location.href = 'login.html';
-        }
+        // Home.html wuxuu baarayaa afgarashadii laga soo diray login.html
+const userEmail = sessionStorage.getItem('userEmail');
+const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+
+if (!userEmail || isLoggedIn !== 'true') {
+    // Haddii tuugo lagu soo dhex dhuuntay ama afgarashadu maqan tahay, dib u celi!
+    window.location.href = 'login.html';
+}
+
     </script>
 
     <script type="module">
