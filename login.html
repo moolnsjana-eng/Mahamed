@@ -105,10 +105,17 @@
                 if (docSnap.exists()) {
                     const userData = docSnap.data();
 
-                    if (userData.password === pass) {
-                        alert(`Ku soo dhawaada sxb ${userData.name}! ✅`);
-                        window.location.href = 'Home.html'; 
-                    } else {
+                            if (userData.password === pass) {
+            alert('Ku soo dhawaada sxb ' + userData.name + '!');
+            
+            // 1. Halkan ku kaydi afgarashada rasmiga ah (Waxay qaadanaysaa email-kii saxda ahaa)
+            sessionStorage.setItem('userEmail', email); 
+            sessionStorage.setItem('userName', userData.name); // Sidoo kale magaciisa kaydi
+            sessionStorage.setItem('isLoggedIn', 'true'); 
+
+            // 2. Ka dib u oggolow inuu u gudbo Home-ka
+            window.location.href = 'Home.html';
+        }
                         alert('Password-kaagu waa qaldan yahay! ❌');
                         btn.innerHTML = originalHTML;
                         btn.style.backgroundColor = 'var(--primary-coffee)';
