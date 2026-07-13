@@ -9,83 +9,79 @@
 </head>
 <body>
 
-        <div class="container">
+    <div class="container">
         <h2>Is-diiwaangali</h2>
         
-        <form> 
-            
+        <form id="registerForm"> 
             <div class="input-group">
                 <i class="fa-solid fa-user"></i>
-                <input type="text" placeholder="Gali Magacaaga" required>
+                <input type="text" id="userName" placeholder="Gali Magacaaga" required>
             </div>
             
             <div class="input-group">
                 <i class="fa-solid fa-envelope"></i>
-                <input type="email" placeholder="Gali Email-kaaga" required>
+                <input type="email" id="userEmail" placeholder="Gali Email-kaaga" required>
             </div>
 
             <div class="input-group">
                 <i class="fa-solid fa-lock"></i>
-                <input type="password" placeholder="Gali Password-ka" required>
+                <input type="password" id="userPassword" placeholder="Gali Password-ka" required>
             </div>
 
             <button type="submit" class="btn">Send Code Email <i class="fa-solid fa-paper-plane"></i></button>
-            
         </form>
 
         <p class="link-text">Hore ma u diiwaangashan tahay? <a href="login.html">Gal halkan (Login)</a></p>
     </div>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
        (function(){
-          emailjs.init("CAZI5zTFZHRCJJ29P"); // Gali Public Key-gaaga EmailJS
+          emailjs.init("CAZI5zTFZHRCJJ29P"); 
        })();
     </script>
 
     <script>
-        
-        const form = document.querySelector('form');
+        const form = document.getElementById('registerForm');
         const btn = document.querySelector('.btn');
 
         form.addEventListener('submit', function(e) {
-            e.preventDefault(); // Jooji form-ka inuu toos u baxo
+            e.preventDefault();
 
-            // Soo qabo xogta la galiyay
-            const name = document.querySelector('input[type="text"]').value;
-            const email = document.querySelector('input[type="email"]').value;
+            // 1. Soo qabo xogta
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const password = document.getElementById('userPassword').value;
 
-            // Samee koodh 6-god ah oo random ah
+            // 2. Ku kaydi sessionStorage (Muhiim u ah Firebase)
+            sessionStorage.setItem('userName', name);
+            sessionStorage.setItem('userEmail', email);
+            sessionStorage.setItem('userPassword', password);
+
+            // 3. Samee koodhka
             const verificationCode = Math.floor(100000 + Math.random() * 900000);
-
-            // Ku xafid koodhka xusuusta gaaban ee Browser-ka (Session Storage)
             sessionStorage.setItem('savedCode', verificationCode);
 
-            // Bedel qoraalka badhanka iyo midabkiisa si qofku u dareemo in fariintu socoto
+            // 4. Badhanka bedel
             btn.innerHTML = 'Waa la dirayaa... <i class="fa-solid fa-spinner fa-spin"></i>';
             btn.style.backgroundColor = '#f59e0b'; 
 
-            // Xogta loo dirayo EmailJS (Hubi in Template-kaagu aqoonsan yahay magacyadan)
             const templateParams = {
                 to_name: name,
                 to_email: email,
                 message: verificationCode
             };
 
-            // Dir Email-ka
+            // 5. Dir Email-ka
             emailjs.send('service_dbjdryu', 'template_uac1ldy', templateParams)
                 .then(function(response) {
-                    console.log('WAA LAGU GUULAYSTAY!', response.status, response.text);
-                    // Markuu email-ku baxo, u dir bogga xaqiijinta
                     window.location.href = 'reviewcode.html';
                 }, function(error) {
-                    console.log('WAA FASHILMAY...', error);
                     alert('Cilad ayaa dhacday, fadlan dib u isku day.');
                     btn.innerHTML = 'Send Code Email <i class="fa-solid fa-paper-plane"></i>';
                     btn.style.backgroundColor = '#10b981';
                 });
         });
     </script>
-
 </body>
 </html>
-
