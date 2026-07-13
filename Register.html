@@ -3,35 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Is-diiwaangali</title>
+    <title>MUD`TIME - Is-diiwaangali</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="container">
-        <h2>Is-diiwaangali</h2>
-        
-        <form id="registerForm"> 
-            <div class="input-group">
-                <i class="fa-solid fa-user"></i>
-                <input type="text" id="userName" placeholder="Gali Magacaaga" required>
-            </div>
+    <div class="petals-container" id="petals"></div>
+
+    <div class="auth-container">
+        <div class="auth-card">
             
-            <div class="input-group">
-                <i class="fa-solid fa-envelope"></i>
-                <input type="email" id="userEmail" placeholder="Gali Email-kaaga" required>
+            <div class="auth-logo">
+                <h1>MUD`<span>TIME</span></h1>
+                <p>Ku soo dhawaaw maqaaxidaada</p>
             </div>
 
-            <div class="input-group">
-                <i class="fa-solid fa-lock"></i>
-                <input type="password" id="userPassword" placeholder="Gali Password-ka" required>
-            </div>
+            <form id="registerForm"> 
+                
+                <div class="form-group">
+                    <label class="form-label">Magacaaga</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="userName" class="form-input" placeholder="Gali Magacaaga" required>
+                        <i class="fa-solid fa-user input-icon"></i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email-kaaga</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="userEmail" class="form-input" placeholder="Gali Email-kaaga" required>
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                    </div>
+                </div>
 
-            <button type="submit" class="btn">Send Code Email <i class="fa-solid fa-paper-plane"></i></button>
-        </form>
+                <div class="form-group">
+                    <label class="form-label">Password-ka</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="userPassword" class="form-input" placeholder="Gali Password-ka" required>
+                        <i class="fa-solid fa-lock input-icon"></i>
+                    </div>
+                </div>
 
-        <p class="link-text">Hore ma u diiwaangashan tahay? <a href="login.html">Gal halkan (Login)</a></p>
+                <button type="submit" class="btn-primary btn">Send Code Email <i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+
+            <p class="auth-footer">Hore ma u diiwaangashan tahay? <a href="login.html">Gal halkan (Login)</a></p>
+        </div>
     </div>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -39,6 +57,28 @@
        (function(){
           emailjs.init("CAZI5zTFZHRCJJ29P"); 
        })();
+    </script>
+
+    <script>
+        function createPetals() {
+            const container = document.getElementById('petals');
+            const petalCount = 15; // Tirada caleemaha hal mar soo dhacaya
+            
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                
+                // Habaynta cabbirka iyo booska si dabiici ah
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.width = Math.random() * 12 + 8 + 'px';
+                petal.style.height = Math.random() * 12 + 8 + 'px';
+                petal.style.animationDelay = Math.random() * 8 + 's';
+                petal.style.animationDuration = Math.random() * 6 + 6 + 's';
+                
+                container.appendChild(petal);
+            }
+        }
+        createPetals();
     </script>
 
     <script>
@@ -62,9 +102,9 @@
             const verificationCode = Math.floor(100000 + Math.random() * 900000);
             sessionStorage.setItem('savedCode', verificationCode);
 
-            // 4. Badhanka bedel
+            // 4. Badhanka bedel (Badhanka wuxuu qaadanayaa midabka primary-ga marka la gujiyo)
             btn.innerHTML = 'Waa la dirayaa... <i class="fa-solid fa-spinner fa-spin"></i>';
-            btn.style.backgroundColor = '#f59e0b'; 
+            btn.style.backgroundColor = 'var(--accent-gold)'; 
 
             const templateParams = {
                 to_name: name,
@@ -79,7 +119,7 @@
                 }, function(error) {
                     alert('Cilad ayaa dhacday, fadlan dib u isku day.');
                     btn.innerHTML = 'Send Code Email <i class="fa-solid fa-paper-plane"></i>';
-                    btn.style.backgroundColor = '#10b981';
+                    btn.style.backgroundColor = 'var(--primary-coffee)';
                 });
         });
     </script>
