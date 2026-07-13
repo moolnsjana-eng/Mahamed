@@ -23,6 +23,10 @@
                 <input type="password" id="loginPassword" placeholder="Gali Password-ka" required>
             </div>
 
+            <div style="text-align: right; margin-bottom: 15px;">
+                <a href="forgot-password.html" style="font-size: 13px; color: #27ae60; text-decoration: none;">Ma ilowday Password-ka?</a>
+            </div>
+
             <button type="submit" class="btn">Login <i class="fa-solid fa-right-to-bracket"></i></button>
             
         </form>
@@ -31,54 +35,47 @@
     </div>
 
     <script type="module">
-
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAaRTHlkfc0fDwfVNCDvqtMqg39NzIsqhY",
-  authDomain: "login-6f03a.firebaseapp.com",
-  projectId: "login-6f03a",
-  storageBucket: "login-6f03a.firebasestorage.app",
-  messagingSenderId: "392453627354",
-  appId: "1:392453627354:web:dd84fb1a0e4d18790cb4e3"
-};
+        const firebaseConfig = {
+          apiKey: "AIzaSyAaRTHlkfc0fDwfVNCDvqtMqg39NzIsqhY",
+          authDomain: "login-6f03a.firebaseapp.com",
+          projectId: "login-6f03a",
+          storageBucket: "login-6f03a.firebasestorage.app",
+          messagingSenderId: "392453627354",
+          appId: "1:392453627354:web:dd84fb1a0e4d18790cb4e3"
+        };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-// Marka Form-ka Login-ka la submit gareeyo
-document.getElementById('loginForm').addEventListener('submit', async function(e) {
-    e.preventDefault(); // Waxay joojinaysaa in boggii iska reload gamo
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); 
 
-    const email = document.getElementById('loginEmail').value.trim();
-    const pass = document.getElementById('loginPassword').value;
+            const email = document.getElementById('loginEmail').value.trim();
+            const pass = document.getElementById('loginPassword').value;
 
-    try {
-        // Maadaama email-ku uu yahay Document ID-ga, si toos ah ayaan u abbaaraynaa
-        const docRef = doc(db, "users", email);
-        const docSnap = await getDoc(docRef);
+            try {
+                const docRef = doc(db, "users", email);
+                const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-            // Haddii email-ka la helay, waxaan soo saaraynaa xogta ku dhex jirta
-            const userData = docSnap.data();
+                if (docSnap.exists()) {
+                    const userData = docSnap.data();
 
-            // Is-barbardhig password-ka uu qofku qoray iyo kan database-ka ku kaydsan
-            if (userData.password === pass) {
-                alert(`Ku soo dhawaada sxb ${userData.name}! ✅`);
-                window.location.href = 'Home.html'; // Ku dusi boga Home-ka
-            } else {
-                alert('Password-kaagu waa qaldan yahay! ❌');
+                    if (userData.password === pass) {
+                        alert(`Ku soo dhawaada sxb ${userData.name}! ✅`);
+                        window.location.href = 'Home.html'; 
+                    } else {
+                        alert('Password-kaagu waa qaldan yahay! ❌');
+                    }
+                } else {
+                    alert('Email-kan ma aha mid is-diiwaangeliyey! ❌');
+                }
+            } catch (error) {
+                alert('Cilad ayaa dhacday: ' + error.message);
             }
-        } else {
-            alert('Email-kan ma aha mid is-diiwaangeliyey! ❌');
-        }
-    } catch (error) {
-        alert('Cilad ayaa dhacday: ' + error.message);
-    }
-});
-
+        });
     </script>
-
 </body>
 </html>
