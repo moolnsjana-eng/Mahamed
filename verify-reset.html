@@ -1,1 +1,55 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xaqiiji Code-ka</title>
+    <link rel="stylesheet" href="reset-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Xaqiiji Code-ka</h2>
+        <p>Waxaan code xaqiijin ah u dirnay email-kaaga. Fadlan hoos ku qor si aan kuu fasaxno.</p>
+        
+        <form id="verifyForm">
+            <div class="input-group">
+                <i class="fa-solid fa-key"></i>
+                <input type="text" id="enteredCode" placeholder="Gali Code-ka (Tus: 123456)" required autocomplete="off" maxlength="6">
+            </div>
+            <button type="submit" class="btn">Xaqiiji <i class="fa-solid fa-circle-check"></i></button>
+        </form>
+        
+        <p class="link-text"><a href="forgot-password.html">Dib ugu noqo</a></p>
+    </div>
+
+    <script>
+        // Marka hore hubi in qofku uu soo maray bogga 'forgot-password'
+        // oo email iyo code ay ugu kaydsan yihiin Session-ka
+        const savedCode = sessionStorage.getItem('resetCode');
+        const resetEmail = sessionStorage.getItem('resetEmail');
+
+        if (!savedCode || !resetEmail) {
+            alert('Fadlan marka hore email-kaaga geli si code laguugu diro.');
+            window.location.href = 'forgot-password.html'; // Dib u celi hadduu soo dhuuntay
+        }
+
+        document.getElementById('verifyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Soo qaado code-ka uu qofku qoray
+            const userCode = document.getElementById('enteredCode').value.trim();
+
+            // Is-barbardhig labada code
+            if (userCode === savedCode) {
+                alert('Code-ku waa sax! ✅ Hadda waxaad bedeli kartaa password-kaaga.');
+                // Haddii uu sax yahay, u dir bogga ugu dambeeya ee password bedelka
+                window.location.href = 'new-password.html';
+            } else {
+                alert('Code-ka aad galisay waa khalad! Fadlan mar kale hubi. ❌');
+            }
+        });
+    </script>
+</body>
+</html>
 
