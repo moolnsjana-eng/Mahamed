@@ -3,20 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soo Dhawow</title>
+    <title>MUD`TIME - Ku Soo Dhawaaw</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Qurxin dheeri ah oo ku kooban boggan si uu u yeesho bilic ka duwan boggaga kale */
+        .welcome-card {
+            text-align: center;
+            padding: 40px 30px;
+        }
+        .hero-icon-wrapper {
+            width: 90px;
+            height: 90px;
+            background: rgba(139, 92, 26, 0.1); /* Midabka kafeega oo khafiif ah */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            border: 2px solid var(--accent-gold, #c5a880);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            animation: float 4s ease-in-out infinite;
+        }
+        .hero-icon-wrapper i {
+            font-size: 40px;
+            color: var(--accent-gold, #c5a880);
+        }
+        .welcome-title {
+            font-size: 2rem;
+            color: var(--primary-coffee, #2c1d11);
+            margin-bottom: 5px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .welcome-subtitle {
+            font-size: 0.95rem;
+            color: #6d645c;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+        /* Hover animations loogu talagalay badhannada si ay u noqdaan kuwo soo jiidasho leh */
+        .btn-welcome {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out !important;
+        }
+        .btn-welcome:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(44, 29, 17, 0.15) !important;
+        }
+        .btn-register-welcome {
+            background-color: var(--accent-gold, #c5a880) !important;
+            border-color: var(--accent-gold, #c5a880) !important;
+            color: #fff !important;
+        }
+        .btn-register-welcome:hover {
+            background-color: #b3946d !important;
+        }
+        /* Animation jilicsan oo ruxaya koobka kafeega */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Ku Soo Dhawow Nidaamka</h2>
-        <p class="link-text" style="margin-bottom: 25px;">Fadlan dooro inaad soo gasho ama aad is-diiwaangaliso.</p>
-        
-        <a href="login.html" class="btn" style="text-decoration: none; display: block; margin-bottom: 15px;">Soo Gal (Login)</a>
-        
-        <a href="Register.html" class="btn" style="text-decoration: none; display: block; background-color: #f59e0b;">Is-diiwaangali</a>
+    <div class="petals-container" id="petals"></div>
+
+    <div class="auth-container">
+        <div class="auth-card welcome-card">
+            
+            <div class="hero-icon-wrapper">
+                <i class="fa-solid fa-mug-hot"></i>
+            </div>
+
+            <div class="auth-logo">
+                <h1 class="welcome-title">MUD`<span>TIME</span></h1>
+                <p class="welcome-subtitle">Ku soo dhawaaw maqaaxidaada qadiimiga ah. Ku raaxayso wakhti kafeegu uu yahay wehelka ugu fiican.</p>
+            </div>
+
+            <div class="btn-group">
+                
+                <a href="login.html" class="btn-primary btn btn-welcome">
+                    <span>Soo Gal (Login)</span> 
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+
+                <a href="Register.html" class="btn-primary btn btn-welcome btn-register-welcome">
+                    <span>Is-diiwaangali</span> 
+                    <i class="fa-solid fa-user-plus"></i>
+                </a>
+
+            </div>
+
+        </div>
     </div>
+
+    <script>
+        function createPetals() {
+            const container = document.getElementById('petals');
+            const petalCount = 15; 
+            
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.width = Math.random() * 12 + 8 + 'px';
+                petal.style.height = Math.random() * 12 + 8 + 'px';
+                petal.style.animationDelay = Math.random() * 8 + 's';
+                petal.style.animationDuration = Math.random() * 6 + 6 + 's';
+                
+                container.appendChild(petal);
+            }
+        }
+        createPetals();
+    </script>
 
 </body>
 </html>
-
