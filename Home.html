@@ -165,6 +165,8 @@
 
         function logout() {
             sessionStorage.clear();
+            localStorage.removeItem('userEmail'); // Tirtir haddii uu jiro
+            localStorage.removeItem('loggedUser');
             window.location.href = 'login.html';
         }
     </script>
@@ -185,13 +187,21 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Hubi in qofku uu login yahay
-        const userEmail = sessionStorage.getItem('userEmail') || sessionStorage.getItem('resetEmail');
-        const userName = sessionStorage.getItem('userName') || "Macmiil";
+        // BADBAADO DOUBLE AH: Waxay hubineysaa dhamaan meelaha xogta soo gelista lagu kaydiyo
+        const userEmail = sessionStorage.getItem('userEmail') || 
+                          sessionStorage.getItem('resetEmail') || 
+                          localStorage.getItem('userEmail') || 
+                          localStorage.getItem('loggedUser'); // Badbaadada labaad
 
+        const userName = sessionStorage.getItem('userName') || 
+                         localStorage.getItem('userName') || 
+                         "Macmiil";
+
+        // Haddii uu iimaylku bannaanyahay (qofku iska soo tilaabay URL-ka), u celi login.html
         if (!userEmail) {
             window.location.href = 'login.html';
         } else {
+            // Haddii uu jiro, u qor iimaylka oo u oggolow inuu bogga ku dhex jiro
             document.getElementById('welcomeUser').innerText = `Soo dhowow, ${userName} (${userEmail})`;
         }
 
@@ -200,7 +210,7 @@
             const menuContainer = document.getElementById('menuContainer');
             try {
                 const querySnapshot = await getDocs(collection(db, "menu"));
-                menuContainer.innerHTML = ''; // Nadiifi loading-ka
+                menuContainer.innerHTML = ''; 
 
                 if (querySnapshot.empty) {
                     menuContainer.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">Weli wax cunto ah laguma darin database-ka.</p>';
@@ -234,12 +244,11 @@
         async function loadHistory() {
             const historyContainer = document.getElementById('historyContainer');
             try {
-                // Kaliya soo saar dalabyada uu leeyahay iimaylka hadda furan
                 const q = query(collection(db, "orders"), where("userEmail", "==", userEmail));
                 const querySnapshot = await getDocs(q);
                 
                 if (!querySnapshot.empty) {
-                    historyContainer.innerHTML = ''; // Nadiifi meesha
+                    historyContainer.innerHTML = ''; 
                     querySnapshot.forEach((doc) => {
                         const order = doc.data();
                         const statusClass = order.status === 'Completed' ? 'status-completed' : 'status-pending';
@@ -262,18 +271,16 @@
             }
         }
 
-        // U oggolaan in function-ku uu ka shaqeeyo meel ka baxsan module-ka
         window.selectItem = function(id, name, price, image) {
             sessionStorage.setItem('selectedItemID', id);
             sessionStorage.setItem('selectedItemName', name);
             sessionStorage.setItem('selectedItemPrice', price);
             sessionStorage.setItem('selectedItemImage', image);
             
-            // U gudbi bogga xiga ee dalabka rasmiga ah (Tallaabada 3aad)
             window.location.href = 'order.html';
         }
 
-        // Run functions
+        // Run
         loadMenu();
         loadHistory();
     </script>
