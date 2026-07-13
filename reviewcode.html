@@ -22,26 +22,52 @@
             <button type="submit" class="btn">Xaqiiji Koodhka <i class="fa-solid fa-circle-check"></i></button>
         </form>
     </div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('verifyForm');
+  const firebaseConfig = {
+    apiKey: "AIzaSyAaRTHlkfc0fDwfVNCDvqtMqg39NzIsqhY",
+    authDomain: "login-6f03a.firebaseapp.com",
+    projectId: "login-6f03a",
+    storageBucket: "login-6f03a.firebasestorage.app",
+    messagingSenderId: "392453627354",
+    appId: "1:392453627354:web:dd84fb1a0e4d18790cb4e3"
+  };
 
-            form.addEventListener('submit', function(e) {
-                e.preventDefault(); 
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-                const userCode = document.getElementById('enteredCode').value;
-                const savedCode = sessionStorage.getItem('savedCode');
+  // Marka xaqiijinta la taabto
+  document.getElementById('verifyForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const userCode = document.getElementById('enteredCode').value;
+      const savedCode = sessionStorage.getItem('savedCode');
 
-                if (userCode === savedCode) {
-                    alert('Waa la xaqiijiyay! ✅');
-                    window.location.href = 'home.html'; 
-                } else {
-                    alert('Koodhku waa qaldan yahay, fadlan dib u hubi.');
-                }
-            });
-        });
-    </script>
+      if (userCode === savedCode) {
+          // Xogta ka soo qaad kaydka
+          const name = sessionStorage.getItem('userName');
+          const email = sessionStorage.getItem('userEmail');
+          const pass = sessionStorage.getItem('userPassword');
+
+          try {
+              // U dir Firebase
+              await setDoc(doc(db, "users", email), {
+                  name: name,
+                  email: email,
+                  password: pass,
+                  date: new Date().toISOString()
+              });
+              alert('Waa la diiwaangeliyay! ✅');
+              window.location.href = 'home.html';
+          } catch (error) {
+              alert('Cilad ayaa dhacday: ' + error.message);
+          }
+      } else {
+          alert('Koodhkaagu waa qaldan yahay.');
+      }
+  });
+</script>
 
 </body>
 </html>
