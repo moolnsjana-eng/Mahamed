@@ -7,100 +7,264 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS gaar u ah Home Page-ka oo aan ku dareyn style.css */
+        /* CSS-ka cusub ee UI-ga oo la casriyeeyay, iyadoon midabada la bedelin */
+        
+        body {
+            background-color: #fcfcfc; /* Midab dhexdhexaad ah oo naqshada iftiiminaya */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
         .home-layout {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
+
+        /* Header Casri ah */
         .header-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            padding: 15px 25px;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 15px 30px;
+            border-radius: 16px;
             border: 1px solid rgba(139, 92, 26, 0.1);
             margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
         }
+        
         .header-bar h2 {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: var(--primary-coffee);
+            margin: 0;
+            letter-spacing: 1px;
         }
+
+        .header-user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Qaybta Soo Dhoweynta (Hero Section) */
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.4)), url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=1200&q=80') center/cover;
+            padding: 60px 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            border: 1px solid rgba(139, 92, 26, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner h1 {
+            color: var(--primary-coffee);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-banner p {
+            color: #555;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            color: var(--primary-coffee);
+            margin: 40px 0 25px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--accent-gold);
+        }
+
+        /* Kaararka Menu-ga (Menu Cards) oo la qurxiyay */
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 30px;
             margin-bottom: 50px;
         }
+
         .menu-card {
             background: #fff;
-            border-radius: 15px;
+            border-radius: 16px;
             overflow: hidden;
-            border: 1px solid rgba(139, 92, 26, 0.1);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(139, 92, 26, 0.08);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
         }
+
         .menu-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(139, 92, 26, 0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(139, 92, 26, 0.12);
         }
+
+        .menu-img-container {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+        }
+
         .menu-img {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
         }
+
+        .menu-card:hover .menu-img {
+            transform: scale(1.08);
+        }
+
+        .menu-price-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent-gold);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+
         .menu-info {
             padding: 20px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
         }
+
         .menu-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--primary-coffee);
-            margin-bottom: 10px;
-        }
-        .menu-price {
-            font-size: 1.1rem;
-            color: var(--accent-gold);
+            font-size: 1.3rem;
             font-weight: 700;
-            margin-bottom: 15px;
-        }
-        .section-title {
-            font-size: 1.5rem;
             color: var(--primary-coffee);
-            margin: 40px 0 20px 0;
-            border-left: 5px solid var(--accent-gold);
-            padding-left: 15px;
+            margin: 0 0 15px 0;
         }
-        .history-table {
+
+        .btn-order {
             width: 100%;
-            background: #fff;
-            border-collapse: collapse;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
-            border: 1px solid rgba(139, 92, 26, 0.1);
-        }
-        .history-table th, .history-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #f2ede9;
-        }
-        .history-table th {
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
             background-color: var(--primary-coffee);
             color: white;
-        }
-        .status-badge {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.85rem;
             font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
         }
-        .status-pending { background: #fef3c7; color: #d97706; }
-        .status-completed { background: #d1fae5; color: #059669; }
+
+        .btn-order:hover {
+            background-color: var(--accent-gold);
+        }
+
+        /* Jadwalka Dalabyada Hore (History Table) oo la casriyeeyay */
+        .history-wrapper {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            border: 1px solid rgba(139, 92, 26, 0.08);
+            overflow-x: auto;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 600px;
+        }
+
+        .history-table th, .history-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .history-table th {
+            color: var(--primary-coffee);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            background-color: transparent;
+            border-bottom: 2px solid rgba(139, 92, 26, 0.1);
+        }
+
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .history-table tr {
+            transition: background-color 0.2s ease;
+        }
+
+        .history-table tr:hover:not(thead tr) {
+            background-color: rgba(139, 92, 26, 0.02);
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-pending { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+        .status-completed { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+
+        .btn-logout {
+            background-color: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-logout:hover {
+            background-color: #ef4444;
+            color: white;
+        }
+
     </style>
 </head>
 <body>
@@ -110,35 +274,46 @@
     <div class="home-layout">
         
         <div class="header-bar">
-            <div>
+            <div class="header-user-info">
                 <h2>MUD`<span>TIME</span></h2>
-                <p id="welcomeUser" style="color: #666; font-size: 0.9rem;">Soo dhowow, Macmiil...</p>
+                <p id="welcomeUser" style="color: #888; font-size: 0.95rem; margin: 5px 0 0 0;"></p>
             </div>
-            <button onclick="logout()" class="btn-primary btn" style="width: auto; padding: 10px 20px; background-color: #ef4444; border-color: #ef4444;">
-                Ka Bax <i class="fa-solid fa-right-from-bracket"></i>
+            <button onclick="logout()" class="btn-logout">
+                <i class="fa-solid fa-right-from-bracket"></i> Ka Bax
             </button>
         </div>
 
-        <h3 class="section-title">Menu-ka Maqaaxida</h3>
-        <div class="menu-grid" id="menuContainer">
-            <p style="text-align: center; grid-column: 1/-1; color: #666;">Waa la soo raryaa menu-ka... <i class="fa-solid fa-spinner fa-spin"></i></p>
+        <div class="hero-banner">
+            <h1>Naso oo Ku Raaxayso Dhadhanka</h1>
+            <p>Ka dooro menu-gayaga qaniga ah ee cuntooyinka iyo cabitaanada leh tayada sare. Dalabkaagu waa diyaar goor walba.</p>
         </div>
 
-        <h3 class="section-title">Dalabyadaydii Hore</h3>
-        <div style="overflow-x: auto;">
+        <h3 class="section-title"><i class="fa-solid fa-mug-hot"></i> Menu-ka Maqaaxida</h3>
+        <div class="menu-grid" id="menuContainer">
+            <div style="grid-column: 1/-1; text-align: center; padding: 40px; background: #fff; border-radius: 16px;">
+                <i class="fa-solid fa-spinner fa-spin fa-2x" style="color: var(--accent-gold); margin-bottom: 15px;"></i>
+                <p style="color: #666; font-size: 1.1rem;">Waxaa la soo raryaa menu-ka macaan...</p>
+            </div>
+        </div>
+
+        <h3 class="section-title"><i class="fa-solid fa-clock-rotate-left"></i> Dalabyadaydii Hore</h3>
+        <div class="history-wrapper">
             <table class="history-table">
                 <thead>
                     <tr>
-                        <th>Dalabka ID</th>
+                        <th>ID-ga Dalabka</th>
                         <th>Cuntada</th>
                         <th>Qiimaha</th>
-                        <th>Lambarka</th>
+                        <th>Lambarkaaga</th>
                         <th>Xaaladda</th>
                     </tr>
                 </thead>
                 <tbody id="historyContainer">
                     <tr>
-                        <td colspan="5" style="text-align: center; color: #666;">Ma jiraan dalabyo hore oo la helay.</td>
+                        <td colspan="5" style="text-align: center; color: #888; padding: 30px;">
+                            <i class="fa-solid fa-box-open" style="font-size: 2rem; color: #ddd; margin-bottom: 10px; display: block;"></i>
+                            Ma jiraan dalabyo hore oo la helay.
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -163,15 +338,12 @@
         }
         createPetals();
 
-        // Home.html wuxuu baarayaa afgarashadii laga soo diray login.html
-const userEmail = sessionStorage.getItem('userEmail');
-const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+        const userEmail = sessionStorage.getItem('userEmail');
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
 
-if (!userEmail || isLoggedIn !== 'true') {
-    // Haddii tuugo lagu soo dhex dhuuntay ama afgarashadu maqan tahay, dib u celi!
-    window.location.href = 'login.html';
-}
-
+        if (!userEmail || isLoggedIn !== 'true') {
+            window.location.href = 'login.html';
+        }
     </script>
 
     <script type="module">
@@ -190,25 +362,21 @@ if (!userEmail || isLoggedIn !== 'true') {
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // BADBAADO DOUBLE AH: Waxay hubineysaa dhamaan meelaha xogta soo gelista lagu kaydiyo
-        const userEmail = sessionStorage.getItem('userEmail') || 
+        const userEmailLocal = sessionStorage.getItem('userEmail') || 
                           sessionStorage.getItem('resetEmail') || 
                           localStorage.getItem('userEmail') || 
-                          localStorage.getItem('loggedUser'); // Badbaadada labaad
+                          localStorage.getItem('loggedUser'); 
 
         const userName = sessionStorage.getItem('userName') || 
                          localStorage.getItem('userName') || 
                          "Macmiil";
 
-        // Haddii uu iimaylku bannaanyahay (qofku iska soo tilaabay URL-ka), u celi login.html
-        if (!userEmail) {
+        if (!userEmailLocal) {
             window.location.href = 'login.html';
         } else {
-            // Haddii uu jiro, u qor iimaylka oo u oggolow inuu bogga ku dhex jiro
-            document.getElementById('welcomeUser').innerText = `Soo dhowow, ${userName} (${userEmail})`;
+            document.getElementById('welcomeUser').innerText = `Soo dhowow, ${userName} (${userEmailLocal})`;
         }
 
-        // 1. Kasoo jiid Menu-ka Firestore-ka
         async function loadMenu() {
             const menuContainer = document.getElementById('menuContainer');
             try {
@@ -224,13 +392,16 @@ if (!userEmail || isLoggedIn !== 'true') {
                     const item = doc.data();
                     const itemID = doc.id;
 
+                    // Naqshadda kaarka ee halkan lagu bedelay si ay ula jaanqaado UI-ga cusub
                     const cardHTML = `
                         <div class="menu-card">
-                            <img src="${item.image || 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500'}" alt="${item.name}" class="menu-img">
+                            <div class="menu-img-container">
+                                <span class="menu-price-tag">${item.price}</span>
+                                <img src="${item.image || 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500'}" alt="${item.name}" class="menu-img">
+                            </div>
                             <div class="menu-info">
                                 <h4 class="menu-title">${item.name}</h4>
-                                <p class="menu-price">${item.price}</p>
-                                <button onclick="selectItem('${itemID}', '${item.name}', '${item.price}', '${item.image || ''}')" class="btn-primary btn" style="margin-top: 10px;">
+                                <button onclick="selectItem('${itemID}', '${item.name}', '${item.price}', '${item.image || ''}')" class="btn-order">
                                     Dalbo <i class="fa-solid fa-cart-shopping"></i>
                                 </button>
                             </div>
@@ -243,11 +414,10 @@ if (!userEmail || isLoggedIn !== 'true') {
             }
         }
 
-        // 2. Kasoo jiid History-ga Dalabyada qofka ee rasmiga ah
         async function loadHistory() {
             const historyContainer = document.getElementById('historyContainer');
             try {
-                const q = query(collection(db, "orders"), where("userEmail", "==", userEmail));
+                const q = query(collection(db, "orders"), where("userEmail", "==", userEmailLocal));
                 const querySnapshot = await getDocs(q);
                 
                 if (!querySnapshot.empty) {
@@ -255,15 +425,18 @@ if (!userEmail || isLoggedIn !== 'true') {
                     querySnapshot.forEach((doc) => {
                         const order = doc.data();
                         const statusClass = order.status === 'Completed' ? 'status-completed' : 'status-pending';
+                        
+                        // Astaamo yar oo lagu daray qoraalka status-ka si uu u qurux badnaado
+                        const statusIcon = order.status === 'Completed' ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-solid fa-clock"></i>';
                         const statusText = order.status === 'Completed' ? 'La Bixiyey' : 'Waa la sugayaa';
 
                         const rowHTML = `
                             <tr>
-                                <td>#${doc.id.substring(0, 6).toUpperCase()}</td>
+                                <td><strong>#${doc.id.substring(0, 6).toUpperCase()}</strong></td>
                                 <td>${order.itemName}</td>
                                 <td>${order.price}</td>
                                 <td>${order.phone}</td>
-                                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                                <td><span class="status-badge ${statusClass}">${statusIcon} ${statusText}</span></td>
                             </tr>
                         `;
                         historyContainer.innerHTML += rowHTML;
@@ -283,7 +456,6 @@ if (!userEmail || isLoggedIn !== 'true') {
             window.location.href = 'order.html';
         }
 
-        // Run
         loadMenu();
         loadHistory();
     </script>
