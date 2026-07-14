@@ -229,15 +229,18 @@
 
                 // 2. U dir xogta EmailJS ahaan
                 const emailParams = {
-                    to_email: email,             // Waxaad sidoo kale u diri kartaa iimaylkaaga maamulka (admin)
-                    customer_name: name,
-                    customer_email: email,
-                    customer_phone: phone,
-                    payment_company: company,
-                    delivery_location: locationVal,
-                    item_name: itemName,
-                    item_price: itemPrice
-                };
+                to_email: email,             
+                customer_name: name,
+                customer_email: email,
+                customer_phone: phone,
+                payment_company: company,
+               delivery_location: locationVal,
+               item_name: itemName,
+               item_price: itemPrice,
+               // Xariiqan hoose ku dar si sawirka loo diro:
+               item_image: sessionStorage.getItem('selectedItemImage') || 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500'
+               };
+
 
                 // HALKAN DHIG SERVICE_ID IYO TEMPLATE_ID-GAAGA EMAILJS
                 await emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", emailParams);
