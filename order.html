@@ -34,14 +34,39 @@
             font-size: 1.2rem;
             font-weight: 700;
         }
+        /* Style dheeri ah oo loogu talagalay Select dropdown-ka shirkadaha lacagta */
+        .form-select {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 1px solid rgba(139, 92, 26, 0.2);
+            border-radius: 8px;
+            background-color: #fff;
+            color: #333;
+            font-size: 1rem;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: border-color 0.3s;
+        }
+        .form-select:focus {
+            border-color: var(--accent-gold);
+        }
     </style>
+    <!-- EmailJS SDK Integration -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            // HALKAN DHIG EMAILJS PUBLIC KEY-GAAGA (Ugu beddel KEY-gaaga rasmiga ah)
+            emailjs.init("YOUR_EMAILJS_PUBLIC_KEY");
+        })();
+    </script>
 </head>
 <body>
 
     <div class="petals-container" id="petals"></div>
 
     <div class="auth-container">
-        <div class="auth-card" style="max-width: 500px;">
+        <div class="auth-card" style="max-width: 500px; margin-top: 30px; margin-bottom: 30px;">
             <div class="auth-logo">
                 <h1>MUD`<span>DALAB</span></h1>
                 <p>Fadlan xaqiiji dalabkaaga hoose</p>
@@ -54,11 +79,46 @@
             </div>
 
             <form id="confirmOrderForm">
+                <!-- Magaca Macmiilka -->
                 <div class="form-group">
-                    <label class="form-label">Lambarka Taleefanka (EVC/ZAAD/SAHAL)</label>
+                    <label class="form-label">Magacaaga oo Buuxa</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="userNameInput" class="form-input" placeholder="Tusaale: Maxamed Cali" required>
+                        <i class="fa-solid fa-user input-icon"></i>
+                    </div>
+                </div>
+
+                <!-- Lambarka Taleefanka -->
+                <div class="form-group">
+                    <label class="form-label">Lambarka Taleefanka</label>
                     <div class="input-wrapper">
                         <input type="number" id="userPhone" class="form-input" placeholder="Tusaale: 61XXXXXXX" required>
                         <i class="fa-solid fa-phone input-icon"></i>
+                    </div>
+                </div>
+
+                <!-- Shirkadda Lacagta -->
+                <div class="form-group">
+                    <label class="form-label">Shirkadda Aad Lacagta Ka Soo Direyso</label>
+                    <div class="input-wrapper">
+                        <select id="paymentCompany" class="form-select" required>
+                            <option value="" disabled selected>Dooro Shirkadda...</option>
+                            <option value="Hormud (EVC Plus)">Hormud (EVC Plus)</option>
+                            <option value="Golis (Sahal)">Golis (Sahal)</option>
+                            <option value="Somtel (Zaad)">Somtel (Zaad)</option>
+                            <option value="Telesom (Zaad)">Telesom (Zaad)</option>
+                            <option value="NationLink (E-Maal)">NationLink (E-Maal)</option>
+                        </select>
+                        <i class="fa-solid fa-credit-card input-icon"></i>
+                    </div>
+                </div>
+
+                <!-- Goobta / Cinwaanka -->
+                <div class="form-group">
+                    <label class="form-label">Goobta Delivery-ga (Xaafada & Jidka)</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="userLocation" class="form-input" placeholder="Tusaale: Hodan, Jidka Sodonka" required>
+                        <i class="fa-solid fa-location-dot input-icon"></i>
                     </div>
                 </div>
 
@@ -118,7 +178,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-        // Firebase Config
+        // Firebase Config-kaaga rasmiga ah
         const firebaseConfig = {
             apiKey: "AIzaSyAaRTHlkfc0fDwfVNCDvqtMqg39NzIsqhY",
             authDomain: "login-6f03a.firebaseapp.com",
@@ -143,23 +203,49 @@
             confirmBtn.innerHTML = 'Waa la dirayaa... <i class="fa-solid fa-spinner fa-spin"></i>';
             confirmBtn.disabled = true;
 
+            // Soo qabashada xogta foomka
+            const name = document.getElementById('userNameInput').value;
             const phone = document.getElementById('userPhone').value;
+            const company = document.getElementById('paymentCompany').value;
+            const locationVal = document.getElementById('userLocation').value;
+            const email = sessionStorage.getItem('userEmail') || localStorage.getItem('userEmail');
+
+            const itemName = sessionStorage.getItem('selectedItemName');
+            const itemPrice = sessionStorage.getItem('selectedItemPrice');
 
             try {
-                // Ku dar Database-ka qaybta "orders"
+                // 1. Ku dar Database-ka Firestore qaybta "orders"
                 await addDoc(collection(db, "orders"), {
-                    userEmail: sessionStorage.getItem('userEmail') || localStorage.getItem('userEmail'),
-                    itemName: sessionStorage.getItem('selectedItemName'),
-                    price: sessionStorage.getItem('selectedItemPrice'),
+                    userEmail: email,
+                    userName: name,              // Wuxuu hadda kaydinayaa magaca rasmiga ah ee dalbaday
+                    itemName: itemName,
+                    price: itemPrice,
                     phone: phone,
-                    status: "Pending", // Tani waxay ka dhigaysaa "Waa la sugayaa" jadwalka home.html
-                    timestamp: serverTimestamp() // Waqtiga la dalbaday
+                    paymentCompany: company,      // Wuxuu kaydinayaa shirkada lacagta laga soo diray
+                    deliveryLocation: locationVal,// Wuxuu kaydinayaa goobta loo geynayo cuntada
+                    status: "Pending",            // Waa la sugayaa
+                    timestamp: serverTimestamp()  // Waqtiga rasmiga ah
                 });
+
+                // 2. U dir xogta EmailJS ahaan
+                const emailParams = {
+                    to_email: email,             // Waxaad sidoo kale u diri kartaa iimaylkaaga maamulka (admin)
+                    customer_name: name,
+                    customer_email: email,
+                    customer_phone: phone,
+                    payment_company: company,
+                    delivery_location: locationVal,
+                    item_name: itemName,
+                    item_price: itemPrice
+                };
+
+                // HALKAN DHIG SERVICE_ID IYO TEMPLATE_ID-GAAGA EMAILJS
+                await emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", emailParams);
 
                 // Fariin Guul ah
                 statusMessage.style.display = 'block';
                 statusMessage.style.color = '#059669'; 
-                statusMessage.innerText = '✅ Dalabkaagu waa guulaystay! Dib ayaa laguu celinayaa...';
+                statusMessage.innerText = '✅ Dalabkaagu waa guulaystay, iimaylna waa kuu dhacay! Dib ayaa laguu celinayaa...';
                 
                 // Nadiifi xogta dalabka ee kaydsanayd
                 sessionStorage.removeItem('selectedItemID');
@@ -167,16 +253,16 @@
                 sessionStorage.removeItem('selectedItemPrice');
                 sessionStorage.removeItem('selectedItemImage');
 
-                // Dib ugu celi home.html 2 ilbiriqsi kadib si uu u arko History-giisa
+                // Dib ugu celi home.html 2.5 ilbiriqsi kadib si uu u arko History-giisa rasmiga ah
                 setTimeout(() => {
-                    window.location.href = 'Home.html';
-                }, 2000);
+                    window.location.href = 'home.html';
+                }, 2500);
 
             } catch (error) {
                 console.error("Cilad: ", error);
                 statusMessage.style.display = 'block';
                 statusMessage.style.color = '#ef4444'; 
-                statusMessage.innerText = '❌ Cilad ayaa dhacday, isku day markale.';
+                statusMessage.innerText = '❌ Cilad ayaa dhacday intii hawshu socotay. Fadlan isku day markale.';
                 
                 confirmBtn.innerHTML = originalBtnText;
                 confirmBtn.disabled = false;
@@ -185,4 +271,3 @@
     </script>
 </body>
 </html>
-
