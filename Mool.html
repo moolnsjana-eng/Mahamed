@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUD`TIME - Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-orange: #ff7043;
+            --primary-dark: #1f1f2e;
+            --bg-light: #f5f7fb;
+            --white: #ffffff;
+            --text-dark: #333333;
+            --text-muted: #7c7c8c;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        /* Mobile Container to look like an App */
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            padding-bottom: 80px; /* Space for bottom nav */
+        }
+
+        /* Header Style */
+        .admin-header {
+            background: var(--primary-dark);
+            color: var(--white);
+            padding: 20px;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .admin-header h1 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .admin-header h1 span {
+            color: var(--primary-orange);
+        }
+
+        .admin-header p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* Tabs Navigation (Top) */
+        .tab-navigation {
+            display: flex;
+            justify-content: space-around;
+            background: #f1f3f7;
+            margin: 15px;
+            padding: 5px;
+            border-radius: 12px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--white);
+            color: var(--primary-orange);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            padding: 0 15px;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Style */
+        .form-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px dashed #e1e4e8;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 1px solid #e1e4e8;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-orange);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-orange);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+        }
+
+        /* Orders & Products Cards */
+        .list-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 15px 0 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: 1px solid #f1f3f7;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .item-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .item-details h4 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .item-details p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .delete-btn {
+            background: #fef2f2;
+            color: var(--danger);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        /* Order Management Cards */
+        .order-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 5px solid var(--warning);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .order-card.Pending { border-left-color: var(--warning); }
+        .order-card.Preparing { border-left-color: #3b82f6; }
+        .order-card.Completed { border-left-color: var(--success); }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .order-body h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .order-body p {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .status-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-preparing { background: #eff6ff; color: #1d4ed8; }
+        .btn-completed { background: #ecfdf5; color: #047857; }
+
+        .status-badge {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .badge-Pending { background: #fef3c7; color: #d97706; }
+        .badge-Preparing { background: #dbeafe; color: #1d4ed8; }
+        .badge-Completed { background: #d1fae5; color: #059669; }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 65px;
+            background: var(--primary-dark);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .nav-link {
+            color: #8f92a1;
+            text-decoration: none;
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-link.active {
+            color: var(--primary-orange);
+        }
+
+        .nav-link i {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <div class="admin-header">
+            <h1>MUD`<span>ADMIN</span></h1>
+            <p>Maamulka dalabyada iyo menu-yada makhaayada</p>
+        </div>
+
+        <div class="tab-navigation">
+            <button class="tab-btn active" onclick="switchTab('orders-tab')">
+                <i class="fa-solid fa-bell"></i> Dalabyada (<span id="orders-count">0</span>)
+            </button>
+            <button class="tab-btn" onclick="switchTab('menu-tab')">
+                <i class="fa-solid fa-utensils"></i> Menu & Tirtiris
+            </button>
+        </div>
+
+        <div id="orders-tab" class="content-section active">
+            <div class="list-title">
+                <span>Dalabyada Cusub</span>
+                <i class="fa-solid fa-arrows-rotate" style="cursor: pointer; color: var(--primary-orange);" onclick="window.location.reload()"></i>
+            </div>
+            <div id="ordersContainer">
+                <p style="text-align: center; padding: 20px; color: var(--text-muted);">
+                    <i class="fa-solid fa-spinner fa-spin"></i> Waa la soo raryaa dalabyada...
+                </p>
+            </div>
+        </div>
+
+        <div id="menu-tab" class="content-section">
+            <div class="form-card">
+                <h3 style="font-size: 14px; margin-bottom: 12px; color: var(--primary-orange);">Kudar Cunto/Cabitaan Cusub</h3>
+                <form id="addMenuForm">
+                    <div class="form-group">
+                        <label class="form-label">Magaca Alaabta</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="itemName" class="form-input" placeholder="Chocolate Cake" required>
+                            <i class="fa-solid fa-mug-hot input-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Qiimaha (Tusaale: $2.50)</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="itemPrice" class="form-input" placeholder="$2.50" required>
+                            <i class="fa-solid fa-tag input-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Nooca (Category)</label>
+                        <div class="input-wrapper">
+                            <select id="itemCategory" class="form-input" required style="padding-left: 40px;">
+                                <option value="Coffee">Coffee</option>
+                                <option value="Sweets">Sweets</option>
+                                <option value="Cold Drinks">Cold Drinks</option>
+                            </select>
+                            <i class="fa-solid fa-list input-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Link-ga Sawirka (URL)</label>
+                        <div class="input-wrapper">
+                            <input type="url" id="itemImage" class="form-input" placeholder="Geli link-ga sawirka..." required>
+                            <i class="fa-solid fa-image input-icon"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        Ku Dar Menu-ka <i class="fa-solid fa-plus"></i>
+                    </button>
+                    
+                    <div id="statusMessage" style="text-align: center; margin-top: 10px; font-weight: bold; display: none; font-size: 13px;"></div>
+                </form>
+            </div>
+
+            <div class="list-title">
+                <span>Alaabta Menu-ga Ku Jirta</span>
+            </div>
+            <div id="adminMenuContainer">
+                <p style="text-align: center; padding: 20px; color: var(--text-muted);">Alaabta waa la raryaa...</p>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="home.html" class="nav-link">
+                <i class="fa-solid fa-house"></i>
+                Home-ka
+            </a>
+            <a href="#" class="nav-link active">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                Admin Panel
+            </a>
+        </nav>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            addDoc, 
+            getDocs, 
+            doc, 
+            updateDoc, 
+            deleteDoc, 
+            onSnapshot 
+        } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaRTHlkfc0fDwfVNCDvqtMqg39NzIsqhY",
+            authDomain: "login-6f03a.firebaseapp.com",
+            projectId: "login-6f03a",
+            storageBucket: "login-6f03a.firebasestorage.app",
+            messagingSenderId: "392453627354",
+            appId: "1:392453627354:web:dd84fb1a0e4d18790cb4e3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Tab Switcher
+        window.switchTab = function(tabId) {
+            document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // ==========================================
+        // 1. MAAMULKA DALABYADA (LIVE REALTIME ORDERS)
+        // ==========================================
+        function loadRealtimeOrders() {
+            const ordersContainer = document.getElementById('ordersContainer');
+            const ordersCountSpan = document.getElementById('orders-count');
+
+            // Realtime listener
+            onSnapshot(collection(db, "orders"), (snapshot) => {
+                ordersContainer.innerHTML = '';
+                let activeOrders = 0;
+
+                if (snapshot.empty) {
+                    ordersContainer.innerHTML = '<p style="text-align: center; padding: 30px; color: #888;">Weli wax dalab ah ma jiraan sxb.</p>';
+                    ordersCountSpan.innerText = '0';
+                    return;
+                }
+
+                snapshot.forEach((documentSnapshot) => {
+                    const orderId = documentSnapshot.id;
+                    const order = documentSnapshot.data();
+                    
+                    // Kaliya xisaabi dalabyada aan wali dhamaanin (Pending iyo Preparing)
+                    if(order.status !== 'Completed') {
+                        activeOrders++;
+                    }
+
+                    const statusClass = order.status || 'Pending';
+                    
+                    // Badhamada loogu talo galay in xaaladda lagu baddalo
+                    let actionButtons = '';
+                    if (order.status === 'Pending') {
+                        actionButtons = `
+                            <button class="status-btn btn-preparing" onclick="updateOrderStatus('${orderId}', 'Preparing')">
+                                <i class="fa-solid fa-spinner fa-spin"></i> Loo Diyaarinayo
+                            </button>
+                        `;
+                    } else if (order.status === 'Preparing') {
+                        actionButtons = `
+                            <button class="status-btn btn-completed" onclick="updateOrderStatus('${orderId}', 'Completed')">
+                                <i class="fa-solid fa-circle-check"></i> Waa Diyaar!
+                            </button>
+                        `;
+                    } else {
+                        actionButtons = `<span style="color: var(--success); font-size:12px; font-weight:bold;"><i class="fa-solid fa-check-double"></i> Waa la bixiyay</span>`;
+                    }
+
+                    const orderHTML = `
+                        <div class="order-card ${statusClass}">
+                            <div class="order-header">
+                                <span>#${orderId.substring(0, 7)}</span>
+                                <span class="status-badge badge-${statusClass}">${order.status || 'Pending'}</span>
+                            </div>
+                            <div class="order-body">
+                                <h4>${order.itemName || 'Cunto'}</h4>
+                                <p><strong>Macmiilka:</strong> ${order.userEmail || 'N/A'}</p>
+                                <p><strong>Qiimaha:</strong> <span style="color: var(--primary-orange); font-weight: bold;">${order.price}</span></p>
+                                <div class="order-actions">
+                                    ${actionButtons}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    ordersContainer.innerHTML += orderHTML;
+                });
+
+                ordersCountSpan.innerText = activeOrders;
+            }, (error) => {
+                console.error("Cilad orders-ka: ", error);
+            });
+        }
+
+        // Badashada heerka dalabka (Pending -> Preparing -> Completed)
+        window.updateOrderStatus = async function(orderId, newStatus) {
+            try {
+                const orderRef = doc(db, "orders", orderId);
+                await updateDoc(orderRef, {
+                    status: newStatus
+                });
+            } catch (error) {
+                alert("Cilad ayaa dhacday markii la badalayay xaalada dalabka: " + error.message);
+            }
+        }
+
+        // ==========================================
+        // 2. KUDARISTA MENU-GA (ADD TO FIREBASE)
+        // ==========================================
+        const addMenuForm = document.getElementById('addMenuForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMessage = document.getElementById('statusMessage');
+
+        addMenuForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            submitBtn.innerHTML = 'Waa la dirayaa... <i class="fa-solid fa-spinner fa-spin"></i>';
+            submitBtn.disabled = true;
+
+            const name = document.getElementById('itemName').value;
+            const price = document.getElementById('itemPrice').value;
+            const category = document.getElementById('itemCategory').value;
+            const image = document.getElementById('itemImage').value;
+
+            try {
+                await addDoc(collection(db, "menu"), {
+                    name: name,
+                    price: price,
+                    category: category,
+                    image: image
+                });
+
+                statusMessage.style.display = 'block';
+                statusMessage.style.color = 'var(--success)'; 
+                statusMessage.innerText = '✅ Si guul ah ayaa lagu daray!';
+                addMenuForm.reset();
+
+                setTimeout(() => { statusMessage.style.display = 'none'; }, 3000);
+                loadMenuList(); // dib u rur menu listka
+
+            } catch (error) {
+                statusMessage.style.display = 'block';
+                statusMessage.style.color = 'var(--danger)'; 
+                statusMessage.innerText = '❌ Cilad: ' + error.message;
+            } finally {
+                submitBtn.innerHTML = 'Ku Dar Menu-ka <i class="fa-solid fa-plus"></i>';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // ==========================================
+        // 3. SHAXDA TIRTIRISTA ALAABTA (DELETE FROM FIREBASE)
+        // ==========================================
+        async function loadMenuList() {
+            const adminMenuContainer = document.getElementById('adminMenuContainer');
+            try {
+                const querySnapshot = await getDocs(collection(db, "menu"));
+                adminMenuContainer.innerHTML = '';
+
+                if (querySnapshot.empty) {
+                    adminMenuContainer.innerHTML = '<p style="text-align: center; color: #888;">Weli wax alaab ah kuma jiraan Menu-ga.</p>';
+                    return;
+                }
+
+                querySnapshot.forEach((documentSnapshot) => {
+                    const item = documentSnapshot.data();
+                    const itemId = documentSnapshot.id;
+
+                    const itemHTML = `
+                        <div class="item-card">
+                            <div class="item-info">
+                                <img src="${item.image || 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500'}" class="item-img" alt="">
+                                <div class="item-details">
+                                    <h4>${item.name}</h4>
+                                    <p>${item.category} • <strong style="color: var(--primary-orange);">${item.price}</strong></p>
+                                </div>
+                            </div>
+                            <button class="delete-btn" onclick="deleteMenuItem('${itemId}')">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    `;
+                    adminMenuContainer.innerHTML += itemHTML;
+                });
+            } catch (error) {
+                adminMenuContainer.innerHTML = `<p style="color: red;">Cilad ayaa dhacday: ${error.message}</p>`;
+            }
+        }
+
+        // Tirtirista alaabta
+        window.deleteMenuItem = async function(itemId) {
+            if (confirm("Ma hubtaa sxb in aad rabto in aad tirtirto cuntadan?")) {
+                try {
+                    await deleteDoc(doc(db, "menu", itemId));
+                    alert("Cuntada waa laga tirtiray database-ka!");
+                    loadMenuList(); // dib u soo ror menu-ga hadhay
+                } catch (error) {
+                    alert("Cilad ayaa dhacday intii la tirtirayay: " + error.message);
+                }
+            }
+        }
+
+        // Bilow shaqada
+        loadRealtimeOrders();
+        loadMenuList();
+    </script>
+</body>
+</html>
+
