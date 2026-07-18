@@ -3,17 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MUD`TIME - Home</title>
-    <!-- CSS-ka gaarka ah ee aad dalbatay -->
+    <title>MUD`TIME - App</title>
     <link rel="stylesheet" href="css2.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Styliska Cart-ga iyo Checkout-ka ee lagama maarmaanka ah */
+        .cart-section, .checkout-section {
+            display: none;
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .cart-info {
+            flex-grow: 1;
+            padding: 0 15px;
+        }
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .qty-btn {
+            background: var(--accent-gold, #d4af37);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+        }
+        .cart-total {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: 2px dashed var(--accent-gold, #d4af37);
+        }
+        .btn-continue {
+            width: 100%;
+            background: var(--primary-orange, #ff6b00);
+            color: #fff;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        /* Foomka Checkout-ka */
+        .form-select, .form-input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 1px solid rgba(139, 92, 26, 0.2);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            position: relative;
+        }
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+    </style>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("CAZI5zTFZHRCJJ29P"); // Key-gaaga
+        })();
+    </script>
 </head>
 <body>
 
     <div class="app-container">
         
-        <!-- Header & Search -->
-        <div class="header">
+        <div class="header" id="mainHeader">
             <div class="search-container">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" id="searchInput" placeholder="Raadi cunto ama cabitaan...">
@@ -23,37 +108,28 @@
             </button>
         </div>
 
-        <!-- Promo Banner -->
-        <div class="promo-banner">
+        <div class="promo-banner" id="promoBanner">
             <div class="promo-content">
                 <h3>Best Quality<br>Coffee & Sweets</h3>
                 <p>20% OFF Maanta!</p>
             </div>
         </div>
 
-        <!-- Categories -->
-        <div class="section-header">
-            <h2>Noocyada (Categories)</h2>
-            <a href="#">See all</a>
-        </div>
         <div class="categories" id="categoryContainer">
-            <!-- Buttons-ka halkan ayaa si automatic ah looga buuxinayaa JS -->
             <button class="cat-btn active" onclick="filterCategory('All', this)">Dhammaan</button>
             <button class="cat-btn" onclick="filterCategory('Sweets', this)">Sweets</button>
             <button class="cat-btn" onclick="filterCategory('Coffee', this)">Coffee</button>
             <button class="cat-btn" onclick="filterCategory('Cold Drinks', this)">Cold Drinks</button>
         </div>
 
-        <!-- Menu Grid (Alaabta) -->
         <div class="menu-grid" id="menuContainer">
             <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
-                <i class="fa-solid fa-spinner fa-spin fa-2x" style="color: var(--primary-orange); margin-bottom: 15px;"></i>
+                <i class="fa-solid fa-spinner fa-spin fa-2x" style="color: var(--primary-orange);"></i>
                 <p>Xogta ayaa soo socota...</p>
             </div>
         </div>
 
-        <!-- History (Dalabyada Hore) -->
-        <div class="history-section" id="historySection" style="display: none;">
+        <div class="history-section" id="historySection" style="display: none; padding: 20px;">
             <div class="section-header">
                 <h2>Dalabyadaydii Hore</h2>
             </div>
@@ -62,31 +138,81 @@
             </div>
         </div>
 
-        <!-- Bottom Navigation (U dhiganta sawirka) -->
+        <div class="cart-section" id="cartSection">
+            <h2>Saladdayda</h2>
+            <div id="cartItemsContainer">
+                </div>
+            <div class="cart-total" id="cartTotalDisplay">
+                Wadarta: $0.00
+            </div>
+            <button class="btn-continue" onclick="proceedToCheckout()">
+                Sii Wad Dalabka <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <div class="checkout-section" id="checkoutSection">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2>Xaqiiji Dalabkaaga</h2>
+                <p>Fadlan buuxi xogta hoose si loo diro dalabka</p>
+            </div>
+
+            <form id="confirmOrderForm">
+                <div class="form-group">
+                    <i class="fa-solid fa-user input-icon"></i>
+                    <input type="text" id="userNameInput" class="form-input" placeholder="Magacaaga oo Buuxa" required>
+                </div>
+
+                <div class="form-group">
+                    <i class="fa-solid fa-phone input-icon"></i>
+                    <input type="number" id="userPhone" class="form-input" placeholder="Lambarka Taleefanka" required>
+                </div>
+
+                <div class="form-group">
+                    <i class="fa-solid fa-credit-card input-icon"></i>
+                    <select id="paymentCompany" class="form-select" required>
+                        <option value="" disabled selected>Shirkadda Lacagta...</option>
+                        <option value="Hormud (EVC Plus)">Hormud (EVC Plus)</option>
+                        <option value="Golis (Sahal)">Golis (Sahal)</option>
+                        <option value="Somtel (Zaad)">Somtel (Zaad)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <i class="fa-solid fa-location-dot input-icon"></i>
+                    <input type="text" id="userLocation" class="form-input" placeholder="Goobta Delivery-ga" required>
+                </div>
+
+                <button type="submit" class="btn-continue" id="confirmBtn" style="background: #059669;">
+                    Xaqiiji Dalabka <i class="fa-solid fa-circle-check"></i>
+                </button>
+
+                <div id="statusMessage" style="text-align: center; margin-top: 15px; font-weight: 600; display: none;"></div>
+            </form>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="#" onclick="showCart()" style="color: #666;"><i class="fa-solid fa-arrow-left"></i> Dib ugu noqo Saladda</a>
+            </div>
+        </div>
+
         <nav class="bottom-nav">
             <i class="fa-solid fa-house nav-item active" onclick="showHome()"></i>
             <i class="fa-solid fa-clock-rotate-left nav-item" onclick="showHistory()"></i>
-            <i class="fa-solid fa-cart-shopping nav-item"></i>
+            <i class="fa-solid fa-cart-shopping nav-item" onclick="showCart()"></i>
             <i class="fa-solid fa-right-from-bracket nav-item" onclick="logout()" style="color: #ef4444;"></i>
         </nav>
 
     </div>
 
-    <!-- ==========================================
-         JAVASCRIPT LOGIC (Firebase + Search/Filter)
-         ========================================== -->
     <script>
-        // Hubinta Macmiilka
-        const userEmail = sessionStorage.getItem('userEmail');
+        const userEmailLocal = sessionStorage.getItem('userEmail') || localStorage.getItem('userEmail');
         const isLoggedIn = sessionStorage.getItem('isLoggedIn');
-        if (!userEmail || isLoggedIn !== 'true') {
+        if (!userEmailLocal || isLoggedIn !== 'true') {
             window.location.href = 'login.html';
         }
     </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, addDoc, serverTimestamp, query, where } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAaRTHlkfc0fDwfVNCDvqtMqg39NzIsqhY",
@@ -100,56 +226,38 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const userEmailLocal = sessionStorage.getItem('userEmail') || 
-                          sessionStorage.getItem('resetEmail') || 
-                          localStorage.getItem('userEmail') || 
-                          localStorage.getItem('loggedUser'); 
-
-        // Variable lagu keydiyo xogta oo dhan si Search-ga u fududaado
         let allProducts = [];
+        let cart = []; // Halkan ayaa lagu kaydinayaa cuntooyinka la doortay
 
-        // 1. Soo jeedinta Menu-ga Firebase
+        // 1. Soo jeedinta Menu-ga
         async function loadMenu() {
             const menuContainer = document.getElementById('menuContainer');
             try {
                 const querySnapshot = await getDocs(collection(db, "menu"));
-                allProducts = []; // Nadiifi ka hor intaanad buuxin
-
+                allProducts = [];
                 if (querySnapshot.empty) {
-                    menuContainer.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">Weli wax cunto ah laguma darin database-ka.</p>';
+                    menuContainer.innerHTML = '<p>Wax cunto ah laguma darin.</p>';
                     return;
                 }
-
                 querySnapshot.forEach((doc) => {
                     const item = doc.data();
-                    // Keydi xogta oo dhan oo id ku lifaaqan
                     allProducts.push({
                         id: doc.id,
                         name: item.name || 'Magac La\'aan',
                         price: item.price || '$0',
                         image: item.image || 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500',
-                        category: item.category || 'Other' // Category-gii sawirkaaga Firebase ku jiray
+                        category: item.category || 'Other'
                     });
                 });
-
-                // Muuji xogta oo dhan markii ugu horaysa
                 renderProducts(allProducts);
-
             } catch (error) {
-                menuContainer.innerHTML = `<p style="color: red; text-align: center; grid-column: 1/-1;">Cilad ayaa ku dhacday: ${error.message}</p>`;
+                menuContainer.innerHTML = `<p style="color: red;">Cilad: ${error.message}</p>`;
             }
         }
 
-        // 2. Samaynta HTML-ka Card-yada (Function u gaar ah)
         function renderProducts(items) {
             const menuContainer = document.getElementById('menuContainer');
             menuContainer.innerHTML = '';
-
-            if(items.length === 0) {
-                menuContainer.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color: #888;">Wax alaab ah lama helin.</p>';
-                return;
-            }
-
             items.forEach(item => {
                 const cardHTML = `
                     <div class="product-card">
@@ -158,9 +266,7 @@
                         <p class="product-sub">${item.category}</p>
                         <div class="product-bottom">
                             <span class="product-price">${item.price}</span>
-                            <button class="add-btn" onclick="selectItem('${item.id}', '${item.name}', '${item.price}', '${item.image}')">
-                                +
-                            </button>
+                            <button class="add-btn" onclick="addToCart('${item.id}', '${item.name}', '${item.price}', '${item.image}')">+</button>
                         </div>
                     </div>
                 `;
@@ -168,36 +274,188 @@
             });
         }
 
-        // 3. Shaandhaynta Categories-ka (Filter)
-        window.filterCategory = function(categoryName, btnElement) {
-            // Bedel midabka button-ka la gujiyay
-            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-            if(btnElement) btnElement.classList.add('active');
-
-            if (categoryName === 'All') {
-                renderProducts(allProducts);
+        // 2. Nidaamka Saladda (Cart Logic)
+        window.addToCart = function(id, name, price, image) {
+            // Nadiifi qiimaha si loogu xisaabtamo lambar ahaan (Tusaale "$5.00" -> 5.00)
+            let numPrice = parseFloat(price.replace(/[^0-9.-]+/g,"")); 
+            
+            let existingItem = cart.find(item => item.id === id);
+            if(existingItem) {
+                existingItem.qty += 1;
             } else {
-                const filtered = allProducts.filter(item => item.category.toLowerCase() === categoryName.toLowerCase());
-                renderProducts(filtered);
+                cart.push({ id, name, price: numPrice, image, qty: 1 });
+            }
+            alert(`✅ ${name} waa lagu daray saladda!`);
+            renderCart();
+        }
+
+        window.updateQty = function(id, change) {
+            let item = cart.find(i => i.id === id);
+            if(item) {
+                item.qty += change;
+                if(item.qty <= 0) {
+                    cart = cart.filter(i => i.id !== id); // Ka saar haddii tiradu eber noqoto
+                }
+                renderCart();
             }
         }
 
-        // 4. Raadinta (Live Search Logic)
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const searchResults = allProducts.filter(item => 
-                item.name.toLowerCase().includes(searchTerm) || 
-                item.category.toLowerCase().includes(searchTerm)
-            );
-            renderProducts(searchResults);
+        function renderCart() {
+            const container = document.getElementById('cartItemsContainer');
+            const totalDisplay = document.getElementById('cartTotalDisplay');
+            container.innerHTML = '';
+            let total = 0;
+
+            if(cart.length === 0) {
+                container.innerHTML = '<p style="text-align:center;">Saladdaadu waa ebar.</p>';
+                totalDisplay.innerText = 'Wadarta: $0.00';
+                return;
+            }
+
+            cart.forEach(item => {
+                let itemTotal = item.price * item.qty;
+                total += itemTotal;
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="cart-info">
+                            <h4>${item.name}</h4>
+                            <p style="color: #888;">$${item.price.toFixed(2)}</p>
+                        </div>
+                        <div class="qty-controls">
+                            <button class="qty-btn" onclick="updateQty('${item.id}', -1)">-</button>
+                            <span>${item.qty}</span>
+                            <button class="qty-btn" onclick="updateQty('${item.id}', 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+            totalDisplay.innerText = `Wadarta: $${total.toFixed(2)}`;
+        }
+
+        window.proceedToCheckout = function() {
+            if(cart.length === 0) {
+                alert("Fadlan cunto soo dooro horta!");
+                return;
+            }
+            hideAllSections();
+            document.getElementById('checkoutSection').style.display = 'block';
+        }
+
+        // 3. Dirista Dalabka & Hubinta EmailJS Template
+        const confirmOrderForm = document.getElementById('confirmOrderForm');
+        
+        confirmOrderForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const confirmBtn = document.getElementById('confirmBtn');
+            const statusMessage = document.getElementById('statusMessage');
             
-            // Ka qaad active-ka category buttons markaad search garaynayso
-            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            confirmBtn.innerHTML = 'Waa la dirayaa... <i class="fa-solid fa-spinner fa-spin"></i>';
+            confirmBtn.disabled = true;
+
+            const name = document.getElementById('userNameInput').value;
+            const phone = document.getElementById('userPhone').value;
+            const company = document.getElementById('paymentCompany').value;
+            const locationVal = document.getElementById('userLocation').value;
+            
+            let totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            
+            // Habee magacyada cuntooyinka si Database-ka loogu xareeyo
+            let itemsString = cart.map(i => `${i.name} (x${i.qty})`).join(', ');
+
+            try {
+                // 1. Firebase Save
+                await addDoc(collection(db, "orders"), {
+                    userEmail: userEmailLocal,
+                    userName: name,
+                    items: itemsString,       // Cuntooyinka la dalbaday (String ahaan)
+                    cartData: cart,           // Xogta cuntooyinka oo buuxda (Array ahaan)
+                    totalPrice: `$${totalPrice.toFixed(2)}`,
+                    phone: phone,
+                    paymentCompany: company,
+                    deliveryLocation: locationVal,
+                    status: "Pending",
+                    timestamp: serverTimestamp()
+                });
+
+                // 2. EmailJS Logic (Kala qaybinta)
+                let templateID = "";
+                if (cart.length === 1) {
+                    // Template-ka Cunto Kalida ah
+                    templateID = "TEMPLATE_ID_HAL_CUNTO"; // <--- HALKAN GALI TEMPLATE ID-GA KALIYA
+                } else {
+                    // Template-ka Cuntooyinka Wadarta ah (Collection)
+                    templateID = "TEMPLATE_ID_WADAR_AH";  // <--- HALKAN GALI TEMPLATE ID-GA WADARTA
+                }
+
+                const emailParams = {
+                    to_email: userEmailLocal,
+                    customer_name: name,
+                    customer_phone: phone,
+                    payment_company: company,
+                    delivery_location: locationVal,
+                    items_ordered: itemsString, // Waxaa ku qoran waxa uu dalbaday iyo tirada
+                    total_price: `$${totalPrice.toFixed(2)}`
+                };
+
+                // U Dir Emailka
+                await emailjs.send("service_dbjdryu", templateID, emailParams);
+
+                statusMessage.style.display = 'block';
+                statusMessage.style.color = '#059669'; 
+                statusMessage.innerText = '✅ Dalabkaagu waa guulaystay!';
+                
+                // Nadiifi saladda
+                cart = [];
+                renderCart();
+                document.getElementById('confirmOrderForm').reset();
+
+                setTimeout(() => {
+                    showHistory();
+                    statusMessage.style.display = 'none';
+                    confirmBtn.innerHTML = 'Xaqiiji Dalabka <i class="fa-solid fa-circle-check"></i>';
+                    confirmBtn.disabled = false;
+                }, 2500);
+
+            } catch (error) {
+                statusMessage.style.display = 'block';
+                statusMessage.style.color = '#ef4444'; 
+                statusMessage.innerText = '❌ Cilad: ' + error.message;
+                confirmBtn.innerHTML = 'Xaqiiji Dalabka <i class="fa-solid fa-circle-check"></i>';
+                confirmBtn.disabled = false;
+            }
         });
 
-        // 5. Soo jeedinta History-ga
-        async function loadHistory() {
+        // 4. Maamulka Bogagga (Tab Switching)
+        function hideAllSections() {
+            document.getElementById('menuContainer').style.display = 'none';
+            document.getElementById('categoryContainer').style.display = 'none';
+            document.getElementById('promoBanner').style.display = 'none';
+            document.getElementById('mainHeader').style.display = 'none';
+            document.getElementById('historySection').style.display = 'none';
+            document.getElementById('cartSection').style.display = 'none';
+            document.getElementById('checkoutSection').style.display = 'none';
+            
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        }
+
+        window.showHome = function() {
+            hideAllSections();
+            document.getElementById('mainHeader').style.display = 'flex';
+            document.getElementById('promoBanner').style.display = 'flex';
+            document.getElementById('categoryContainer').style.display = 'flex';
+            document.getElementById('menuContainer').style.display = 'grid';
+            document.querySelectorAll('.nav-item')[0].classList.add('active');
+        }
+
+        window.showHistory = async function() {
+            hideAllSections();
+            document.getElementById('historySection').style.display = 'block';
+            document.querySelectorAll('.nav-item')[1].classList.add('active');
+            
             const historyContainer = document.getElementById('historyContainer');
+            historyContainer.innerHTML = '<p>Xogta ayaa la baadhayaa...</p>';
+            
             try {
                 const q = query(collection(db, "orders"), where("userEmail", "==", userEmailLocal));
                 const querySnapshot = await getDocs(q);
@@ -208,11 +466,11 @@
                         const order = doc.data();
                         const statusColor = order.status === 'Completed' ? 'green' : 'orange';
                         
-                        const historyHTML = `
+                        historyContainer.innerHTML += `
                             <div style="border-bottom: 1px solid #eee; padding: 10px 0; display: flex; justify-content: space-between;">
                                 <div>
-                                    <strong>${order.itemName}</strong><br>
-                                    <small>${order.price}</small>
+                                    <strong>${order.items || order.itemName}</strong><br>
+                                    <small>${order.totalPrice || order.price}</small>
                                 </div>
                                 <div style="text-align: right;">
                                     <span style="color: ${statusColor}; font-weight: bold; font-size: 12px;">${order.status}</span><br>
@@ -220,7 +478,6 @@
                                 </div>
                             </div>
                         `;
-                        historyContainer.innerHTML += historyHTML;
                     });
                 } else {
                     historyContainer.innerHTML = 'Ma jiraan dalabyo hore.';
@@ -230,39 +487,33 @@
             }
         }
 
-        // 6. Function-ka Dalabka (Order)
-        window.selectItem = function(id, name, price, image) {
-            sessionStorage.setItem('selectedItemID', id);
-            sessionStorage.setItem('selectedItemName', name);
-            sessionStorage.setItem('selectedItemPrice', price);
-            sessionStorage.setItem('selectedItemImage', image);
-            window.location.href = 'order.html';
+        window.showCart = function() {
+            hideAllSections();
+            document.getElementById('cartSection').style.display = 'block';
+            document.querySelectorAll('.nav-item')[2].classList.add('active');
+            renderCart();
         }
 
-        // 7. Isku bedelka Tabs-ka (Home iyo History)
-        window.showHome = function() {
-            document.getElementById('menuContainer').style.display = 'grid';
-            document.querySelector('.categories').style.display = 'flex';
-            document.querySelector('.promo-banner').style.display = 'flex';
-            document.getElementById('historySection').style.display = 'none';
-            
-            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-            document.querySelectorAll('.nav-item')[0].classList.add('active');
+        // Qaybta Search-ga iyo Filter-ka
+        window.filterCategory = function(categoryName, btnElement) {
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+            if (categoryName === 'All') {
+                renderProducts(allProducts);
+            } else {
+                renderProducts(allProducts.filter(item => item.category.toLowerCase() === categoryName.toLowerCase()));
+            }
         }
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            renderProducts(allProducts.filter(item => 
+                item.name.toLowerCase().includes(searchTerm) || 
+                item.category.toLowerCase().includes(searchTerm)
+            ));
+        });
 
-        window.showHistory = function() {
-            document.getElementById('menuContainer').style.display = 'none';
-            document.querySelector('.categories').style.display = 'none';
-            document.querySelector('.promo-banner').style.display = 'none';
-            document.getElementById('historySection').style.display = 'block';
-            
-            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-            document.querySelectorAll('.nav-item')[1].classList.add('active');
-        }
-
-        // Bilow shaqada markuu page-ku furmo
+        // Initialize
         loadMenu();
-        loadHistory();
     </script>
 </body>
 </html>
